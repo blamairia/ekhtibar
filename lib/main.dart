@@ -41,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Widget> anwserResult = [];
 
   void checkAnswer(bool asnwer) {
-    bool correctAnswer = appBrain.questionGroupe[questionNumber].questionAnswer;
+    bool correctAnswer = appBrain.getQuestionAnswer(questionNumber);
     setState(() {
       if (asnwer == correctAnswer) {
         anwserResult.add(
@@ -64,7 +64,7 @@ class _QuizPageState extends State<QuizPage> {
           ),
         );
       }
-      if (questionNumber < appBrain.questionGroupe.length - 1) {
+      if (questionNumber < appBrain.getQ().length - 1) {
         questionNumber++;
       } else {
         questionNumber = 0;
@@ -86,14 +86,12 @@ class _QuizPageState extends State<QuizPage> {
           flex: 5,
           child: Column(
             children: [
-              Image.asset(
-                appBrain.questionGroupe[questionNumber].questionImage,
-              ),
+              Image.asset(appBrain.getQuestionImage(questionNumber)),
               const SizedBox(
                 height: 20,
               ),
               Text(
-                appBrain.questionGroupe[questionNumber].questionText,
+                appBrain.getQuestionText(questionNumber),
                 style: const TextStyle(
                   fontSize: 25,
                 ),

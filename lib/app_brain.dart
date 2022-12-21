@@ -1,7 +1,7 @@
 import 'package:ekhtibar/question.dart';
 
 class AppBrain {
-  List<Question> questionGroupe = [
+  List<Question> _questionGroupe = [
     Question('the number of the planets in our solar system is 8',
         'images/image-1.jpg', true),
     Question('Cats eat meat', 'images/image-2.jpg', true),
@@ -11,4 +11,20 @@ class AppBrain {
     Question('The earth is Flat', 'images/image-6.jpg', false),
     Question('The earth is Flat', 'images/image-7.jpg', false),
   ];
+
+  String getQuestionText(int questionNumber) {
+    return _questionGroupe[questionNumber].questionText;
+  }
+
+  String getQuestionImage(int questionNumber) {
+    return _questionGroupe[questionNumber].questionImage;
+  }
+
+  bool getQuestionAnswer(int questionNumber) {
+    return _questionGroupe[questionNumber].questionAnswer;
+  }
+
+  List<Question> getQ() {
+    return _questionGroupe;
+  }
 }
