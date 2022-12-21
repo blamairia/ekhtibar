@@ -1,7 +1,9 @@
 import 'dart:html';
-
+import 'app_brain.dart';
 import 'package:flutter/material.dart';
 import 'question.dart';
+
+AppBrain appBrain = AppBrain();
 
 void main() {
   runApp(const QuizApp());
@@ -39,7 +41,7 @@ class _QuizPageState extends State<QuizPage> {
   List<Widget> anwserResult = [];
 
   void checkAnswer(bool asnwer) {
-    bool correctAnswer = questionGroupe[questionNumber].questionAnswer;
+    bool correctAnswer = appBrain.questionGroupe[questionNumber].questionAnswer;
     setState(() {
       if (asnwer == correctAnswer) {
         anwserResult.add(
@@ -62,20 +64,13 @@ class _QuizPageState extends State<QuizPage> {
           ),
         );
       }
-      questionNumber++;
+      if (questionNumber < appBrain.questionGroupe.length - 1) {
+        questionNumber++;
+      } else {
+        questionNumber = 0;
+      }
     });
   }
-
-  List<Question> questionGroupe = [
-    Question('the number of the planets in our solar system is 8',
-        'images/image-1.jpg', true),
-    Question('Cats eat meat', 'images/image-2.jpg', true),
-    Question('China is located in Africa', 'images/image-3.jpg', false),
-    Question('The earth is Flat', 'images/image-4.jpg', false),
-    Question('The earth is Flat', 'images/image-5.jpg', false),
-    Question('The earth is Flat', 'images/image-6.jpg', false),
-    Question('The earth is Flat', 'images/image-7.jpg', false),
-  ];
 
   int questionNumber = 0;
 
@@ -92,13 +87,13 @@ class _QuizPageState extends State<QuizPage> {
           child: Column(
             children: [
               Image.asset(
-                questionGroupe[questionNumber].questionImage,
+                appBrain.questionGroupe[questionNumber].questionImage,
               ),
               const SizedBox(
                 height: 20,
               ),
               Text(
-                questionGroupe[questionNumber].questionText,
+                appBrain.questionGroupe[questionNumber].questionText,
                 style: const TextStyle(
                   fontSize: 25,
                 ),
