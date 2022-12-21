@@ -1,7 +1,6 @@
-import 'dart:html';
 import 'app_brain.dart';
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 AppBrain appBrain = AppBrain();
 
@@ -39,11 +38,13 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Widget> anwserResult = [];
+  int rightAnswers = 0;
 
   void checkAnswer(bool asnwer) {
-    bool correctAnswer = appBrain.getQuestionAnswer(questionNumber);
+    bool correctAnswer = appBrain.getQuestionAnswer();
     setState(() {
       if (asnwer == correctAnswer) {
+        rightAnswers++;
         anwserResult.add(
           const Padding(
             padding: EdgeInsets.all(3.0),
@@ -64,15 +65,31 @@ class _QuizPageState extends State<QuizPage> {
           ),
         );
       }
-      if (questionNumber < appBrain.getQ().length - 1) {
-        questionNumber++;
+      if (appBrain.isFinished() == true) {
+        Alert(
+          context: context,
+          type: AlertType.error,
+          title: "Quiz Finished",
+          desc: "Your Score : $rightAnswers",
+          buttons: [
+            DialogButton(
+              onPressed: () => Navigator.pop(context),
+              width: 120,
+              child: const Text(
+                "Start again",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ],
+        ).show();
+        appBrain.reset();
+        anwserResult = [];
+        rightAnswers = 0;
       } else {
-        questionNumber = 0;
+        appBrain.nextQuestion();
       }
     });
   }
-
-  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -86,12 +103,12 @@ class _QuizPageState extends State<QuizPage> {
           flex: 5,
           child: Column(
             children: [
-              Image.asset(appBrain.getQuestionImage(questionNumber)),
+              Image.asset(appBrain.getQuestionImage()),
               const SizedBox(
                 height: 20,
               ),
               Text(
-                appBrain.getQuestionText(questionNumber),
+                appBrain.getQuestionText(),
                 style: const TextStyle(
                   fontSize: 25,
                 ),
